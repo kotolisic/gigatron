@@ -192,31 +192,31 @@ void Gigatron::storeOp(uint8_t mode, uint8_t bus, uint8_t d) {
 void Gigatron::branchOp(uint8_t mode, uint8_t bus, uint8_t d) {
 
     uint8_t  c = 0;
-    uint8_t  let_ac = ac ^ ZERO;
+    uint8_t  let_ac = ac ^ ZERO;        // ~ac[7], ac[6:0]
     uint16_t base   = pc & 0xff00;
 
     switch (mode) {
-        case 0: // jmp
+        case 0: // jmp [y,<offset>]
             c = 1;
             base = y << 8;
             break;
         case 1: // bgt
-            c = let_ac > ZERO;
+            c = let_ac > ZERO;  // (ac^0x80) > 0x80
             break;
         case 2: // blt
-            c = let_ac < ZERO;
+            c = let_ac < ZERO;  // (ac^0x80) < 0x80
             break;
         case 3: // bne
-            c = let_ac != ZERO;
+            c = let_ac != ZERO; // (ac^0x80) != 0x80
             break;
         case 4: // beq
-            c = let_ac == ZERO;
+            c = let_ac == ZERO; // (ac^0x80) == 0x80
             break;
         case 5: // bge
-            c = let_ac >= ZERO;
+            c = let_ac >= ZERO; // (ac^0x80) >= 0x80
             break;
         case 6: // ble
-            c = let_ac <= ZERO;
+            c = let_ac <= ZERO; // (ac^0x80) <= 0x80
             break;
         case 7: // bra
             c = 1;
