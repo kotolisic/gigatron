@@ -71,5 +71,5 @@ void Gigatron::audio_tick() {
         }
     }
 
-    au_data_buffer[au_cpu_shift + au_cycle] = 4*(let_sample - 8);
+    if (started) au_data_buffer[au_cpu_shift + au_cycle] = 4*(let_sample - 8);
 }

@@ -10,6 +10,9 @@ void Gigatron::procstart() {
     
     ramMask = 0xffff;
     started = 1;
+    
+    disasm_cursor = 0;
+    disasm_start  = 0;
 
     srand( static_cast<unsigned int> (time(0)) );
     for (int i = 0; i < 65536; i++) {

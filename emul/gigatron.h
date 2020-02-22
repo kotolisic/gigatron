@@ -24,8 +24,8 @@ enum Buttons {
     BUTTON_RIGHT    = 0x01
 };
 
-static const char* s_opcodes[7]  = {"ld ", "and", "or ", "xor", "add", "sub", "st "};
-static const char* s_branches[8] = {"jmp", "bgt", "blt", "bne", "beq", "bge", "ble", "bra"};
+static const char* s_opcodes[7]  = {"LD ", "AND", "OR ", "XOR", "ADD", "SUB", "ST "};
+static const char* s_branches[8] = {"JMP", "BGT", "BLT", "BNE", "BEQ", "BGE", "BLE", "BRA"};
 
 class Gigatron {
 
@@ -55,10 +55,12 @@ protected:
     int au_cycle, au_cpu_shift, au_sample_shift;
 
     // Disasm
-    char disasm_row[50];
-    char disasm_opcode[8];
-    char disasm_op1[16];
-    char disasm_op2[16];
+    uint16_t disasm_cursor;
+    uint16_t disasm_start;
+    char     disasm_row[50];
+    char     disasm_opcode[8];
+    char     disasm_op1[16];
+    char     disasm_op2[16];
 
 public:
 
@@ -72,6 +74,7 @@ public:
     // CPU
     void     run();
     void     stop();
+    void     all_tick();
     void     tick();
     void     aluOp   (uint8_t op,   uint8_t mode, uint8_t bus, uint8_t d);
     void     storeOp (uint8_t mode, uint8_t bus,  uint8_t d);
@@ -95,6 +98,8 @@ public:
 
     // Дизассемблер
     char*   disasm(uint16_t address);
+    void    list();
     void    print_char_16(int col, int row, unsigned char ch, uint cl);
     void    print(int col, int row, const char* s, uint cl);
+    void    debugger_press(SDL_Event event);
 };

@@ -114,7 +114,5 @@ void Gigatron::gamepad_press(SDL_Event event) {
 }
 
 void Gigatron::gamepad_up(SDL_Event event) {
-
-    // inReg |= get_key(event);
     inReg = 0xFF;
 }

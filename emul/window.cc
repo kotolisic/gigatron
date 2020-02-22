@@ -39,6 +39,14 @@ Gigatron::Gigatron(int w, int h, const char* caption) {
     SDL_AddTimer(10, WindowTimer, NULL);
 }
 
+// Эмулятор 1 тика процессора
+void Gigatron::all_tick() {
+
+    tick();
+    vga_tick();
+    audio_tick();
+}
+
 // Обработчик событий с окна
 void Gigatron::start() {
 
@@ -58,20 +66,27 @@ void Gigatron::start() {
                     break;
 
                 // Нажата какая-то клавиша
-                case SDL_KEYDOWN: gamepad_press(event); break;
+                case SDL_KEYDOWN: 
+                
+                    if (started)
+                         gamepad_press(event); 
+                    else debugger_press(event);
+                        
+                    break;
 
                 // Отпущена клавиша
-                case SDL_KEYUP: gamepad_up(event); break;
+                case SDL_KEYUP: 
+                
+                    if (started) gamepad_up(event); 
+                    break;
 
                 // Вызывается по таймеру
                 case SDL_USEREVENT:
 
                     if (started) 
                     for (int i = 0; i < 62500; i++) {
-
-                        tick();
-                        vga_tick();
-                        audio_tick();
+                        
+                        all_tick();
                         if (started == 0) break;
                     }
 
