@@ -9,7 +9,7 @@ int Gigatron::get_key(SDL_Event event) {
     int xt = 0;
     int k = eventkey->keysym.scancode;
 
-    //printf("%d ", k);
+    // printf("%d ", k);
     switch (k) {
 
         /* A */ case 0x26: xt = ~'a'; break;
@@ -69,8 +69,8 @@ int Gigatron::get_key(SDL_Event event) {
         /* ls */ case 0x32: xt = 0x2A; break; // Left Shift
         /* lc */ case 0x25: xt = 0x1D; break; // Left Ctrl
         /* la */ case 0x40: xt = 0x38; break; // Left Alt
-        /* en */ case 0x24: xt = ~10; break; // Enter
-        /* es */ case 0x09: xt = 0x01; break; // Escape
+        /* en */ case 0x24: xt = ~10;  break; // Enter
+        /* es */ case 0x09: xt = ~27;  break; // Escape
 
         /* F1  */ case 67: xt = 0x3B; break;
         /* F2  */ case 68: xt = 0x3C; break;
@@ -100,7 +100,7 @@ int Gigatron::get_key(SDL_Event event) {
         /* Del  */ case 0x77: xt = BUTTON_SELECT; break;
         /* Ins  */ case 0x76: xt = BUTTON_A; break;
         /* NLock*/ case 0x4D: xt = 0; break;
-        /* Esc  */ case 0x08: xt = 0; break;
+
 
         default: return 0;
     }
@@ -110,7 +110,15 @@ int Gigatron::get_key(SDL_Event event) {
 }
 
 void Gigatron::gamepad_press(SDL_Event event) {
-    inReg &= ~get_key(event);
+
+    int key = get_key(event);
+
+    // Выход к отладчику
+    if (key == ~27) {
+        require_stop = 1;
+    } else {
+        inReg &= ~key;
+    }
 }
 
 void Gigatron::gamepad_up(SDL_Event event) {

@@ -51,10 +51,13 @@ protected:
         minCol, maxCol,
         vga_out;
 
+    uint32_t vga_buffer[525][800];
+
     // Audio
     int au_cycle, au_cpu_shift, au_sample_shift;
 
     // Disasm
+    char     require_stop;
     uint16_t disasm_cursor;
     uint16_t disasm_start;
     char     disasm_row[50];

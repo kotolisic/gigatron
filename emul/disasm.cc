@@ -135,7 +135,7 @@ void Gigatron::print(int col, int row, const char* s, uint cl) {
 // Выдать листинг гигатрона
 void Gigatron::list() {
 
-    unsigned int i, j;
+    unsigned int i, j, found_pc = 0;
 
     int  dstart = disasm_start;
     char buf[50];
@@ -165,7 +165,7 @@ void Gigatron::list() {
         print(5, i, (const char*)buf, 0xffffc0);
 
         // Указывает текущее положение PC
-        if (pc == dstart) print_char_16(10, i, 0x10, 0xffffff);
+        if (pc == dstart) { print_char_16(10, i, 0x10, 0xffffff); found_pc = 1; }
 
         // Пропечатать цветной вывод
         for (j = 0; j < strlen(dz); j++) {
@@ -199,9 +199,30 @@ void Gigatron::list() {
         dstart++;
     }
 
+    // Рекурсия 1 шаг
+    if (found_pc == 0) {
+
+        disasm_cursor = pc;
+        disasm_start  = pc;
+        list();
+    }
+
     sprintf(buf, "AC: %02X   X:   %02X   Y:    %02X", ac, x, y); print(33, 1, buf, 0xc0c0c0);
     sprintf(buf, "IN: %02X   OUT: %02X   OUTX: %02X", inReg, out, outx); print(33, 2, buf, 0xc0c0c0);
-    sprintf(buf, "PC: %04X NEXT %04X", pc, nextpc);     print(33, 3, buf, 0xc0c0c0);
+    sprintf(buf, "PC: %04X NEXT %04X", pc, nextpc); print(33, 3, buf, 0xc0c0c0);
+
+    // VGA
+    sprintf(buf, "COL %d", col);  print(33, 4, buf, 0xc0c0c0);
+    sprintf(buf, "ROW  %d", row); print(42, 4, buf, 0xc0c0c0);
+
+    // Отрисовка буфера VGA
+    for (int y = 0; y < 480; y += 2)
+    for (int x = 0; x < 640; x += 2) {
+
+        // x &~3 срезает нижние 2 бита, т.к. 1 точка = 4 пикселя
+        uint32_t color = vga_buffer[y][x&~3] ^ (x == 0 || y == 0 || y == 480-2 || x == 640-2 ? 0x808080 : 0);
+        pset((x>>1) + 285, (y>>1) + 200, color);
+    }
 }
 
 // Нажата клавиша в режиме ожидания
@@ -216,6 +237,8 @@ void Gigatron::debugger_press(SDL_Event event) {
         disasm_cursor = pc;
         list();
     }
-
-    // printf("%d ", key);
+    // ESC: Старт процессора
+    else if (key == ~27) {
+        run();
+    }
 }

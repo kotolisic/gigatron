@@ -57,7 +57,14 @@ void Gigatron::vga_tick() {
         uint8_t let_b = (let_out >> 4) & 3;
 
         for (int i = 0; i < 4; i++) {
-            pset((col - minCol) + i, (row - minRow), (85*let_r)*65536 + (85*let_g)*256 + (85*let_b));
+
+            uint32_t color = (85*let_r)*65536 + (85*let_g)*256 + (85*let_b);
+
+            // Сохранение для отладчика
+            vga_buffer[row - minRow][col - minCol] = color;
+
+            // Процессор запущен
+            if (started) pset((col - minCol) + i, (row - minRow), color);
         }
     }
 

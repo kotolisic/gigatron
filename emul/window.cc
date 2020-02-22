@@ -36,6 +36,7 @@ Gigatron::Gigatron(int w, int h, const char* caption) {
     vga_init();
     audio_init();
 
+    require_stop = 0;
     SDL_AddTimer(10, WindowTimer, NULL);
 }
 
@@ -66,28 +67,42 @@ void Gigatron::start() {
                     break;
 
                 // Нажата какая-то клавиша
-                case SDL_KEYDOWN: 
-                
+                case SDL_KEYDOWN:
+
                     if (started)
-                         gamepad_press(event); 
+                         gamepad_press(event);
                     else debugger_press(event);
-                        
+
                     break;
 
                 // Отпущена клавиша
-                case SDL_KEYUP: 
-                
-                    if (started) gamepad_up(event); 
+                case SDL_KEYUP:
+
+                    if (started) gamepad_up(event);
                     break;
 
                 // Вызывается по таймеру
                 case SDL_USEREVENT:
 
-                    if (started) 
-                    for (int i = 0; i < 62500; i++) {
-                        
-                        all_tick();
-                        if (started == 0) break;
+                    if (started) {
+
+                        for (int i = 0; i < 62500; i++) {
+
+                            all_tick();
+
+                            // BREAK
+                            if (started == 0) { require_stop = 1; break; }
+                        }
+                    }
+
+                    // Запрошен останов процессора
+                    if (require_stop) {
+
+                        require_stop  = 0;
+                        disasm_cursor = pc;
+                        disasm_start  = pc;
+                        stop();
+                        list();
                     }
 
                     SDL_Flip(sdl_screen);
