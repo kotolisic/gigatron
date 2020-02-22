@@ -11,11 +11,11 @@ module gigatron
     input   wire [15:0] ir,
 
     // Адрес для чтения
-    output  reg  [14:0] r_addr,
+    output  reg  [15:0] r_addr,
     input   wire [ 7:0] i_data,
 
     // Адрес для записи
-    output  reg  [14:0] w_addr,
+    output  reg  [15:0] w_addr,
     output  reg  [ 7:0] o_data,
     output  reg         o_we,
 
