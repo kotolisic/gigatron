@@ -13,4 +13,4 @@ all: $(OBJ)
 	$(CC) $(CFLAGS) $(LIBS) $< -c -o $@
 
 clean:
-	rm *.o
+	rm -f *.o gigatron
