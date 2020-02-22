@@ -92,4 +92,6 @@ public:
 
     // Дизассемблер
     char*   disasm(uint16_t address);
+    void    print_char_16(int col, int row, unsigned char ch, uint cl);
+    void    print(int col, int row, const char* s, uint cl);
 };

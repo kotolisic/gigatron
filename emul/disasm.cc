@@ -1,6 +1,8 @@
 #include "gigatron.h"
 #include <string.h>
+#include "ansi16.h"
 
+// Дизассемблировать строку
 char* Gigatron::disasm(uint16_t address) {
 
     strcpy(disasm_row,    "");
@@ -102,4 +104,32 @@ char* Gigatron::disasm(uint16_t address) {
     }
 
     return disasm_row;
+}
+
+// Печать на экране Char
+void Gigatron::print_char_16(int col, int row, unsigned char ch, uint cl) {
+    
+    col *= 8;
+    row *= 16;           
+    
+    for (int i = 0; i < 16; i++) {
+         
+        unsigned char hl = ansi16[ch][i];
+        for (int j = 0; j < 8; j++) {
+            if (hl & (1<<(7-j)))
+                pset(j + col, i + row, cl);
+        }
+    }
+}           
+    
+// Печать строки
+void Gigatron::print(int col, int row, const char* s, uint cl) {
+
+    int i = 0;
+    while (s[i]) {
+
+        print_char_16(col, row, s[i], cl);
+        col++;
+        i++;
+    }
 }
