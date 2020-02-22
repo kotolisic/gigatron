@@ -45,6 +45,7 @@ void Gigatron::reset() {
     y       = 0;
     out     = 0;
     outx    = 0;
+    ctrl    = 0;
     inReg   = 0xff; // active low!
 }
 
@@ -166,8 +167,7 @@ void Gigatron::storeOp(uint8_t mode, uint8_t bus, uint8_t d) {
             b = d;
             break;
         case 1:
-            b = 0;
-            // console.error('UNDEFINED BEHAVIOR!');
+            ctrl = d;
             break;
         case 2:
             b = ac;
@@ -176,6 +176,9 @@ void Gigatron::storeOp(uint8_t mode, uint8_t bus, uint8_t d) {
             b = inReg;
             break;
     }
+
+    if (bus == 1)
+        return;
 
     ram[ address(mode, d) & ramMask ] = b;
 

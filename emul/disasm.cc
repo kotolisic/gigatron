@@ -208,7 +208,7 @@ void Gigatron::list() {
     }
 
     sprintf(buf, "AC: %02X   X:   %02X   Y:    %02X", ac, x, y); print(33, 1, buf, 0xc0c0c0);
-    sprintf(buf, "IN: %02X   OUT: %02X   OUTX: %02X", inReg, out, outx); print(33, 2, buf, 0xc0c0c0);
+    sprintf(buf, "IN: %02X   OUT: %02X   OUTX: %02X  CTRL: %02X", inReg, out, outx, ctrl); print(33, 2, buf, 0xc0c0c0);
     sprintf(buf, "PC: %04X NEXT %04X", pc, nextpc); print(33, 3, buf, 0xc0c0c0);
 
     // VGA
