@@ -38,6 +38,7 @@ protected:
     SDL_AudioSpec   audio_device;
 
     // CPU
+    uint8_t  started;
     uint16_t rom[65536]; // 64k x 16
     uint8_t  ram[65536]; // 64k x 8
     uint16_t pc, nextpc;
@@ -69,6 +70,8 @@ public:
     void    procstart();
 
     // CPU
+    void     run();
+    void     stop();
     void     tick();
     void     aluOp   (uint8_t op,   uint8_t mode, uint8_t bus, uint8_t d);
     void     storeOp (uint8_t mode, uint8_t bus,  uint8_t d);

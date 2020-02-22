@@ -66,11 +66,13 @@ void Gigatron::start() {
                 // Вызывается по таймеру
                 case SDL_USEREVENT:
 
+                    if (started) 
                     for (int i = 0; i < 62500; i++) {
 
                         tick();
                         vga_tick();
                         audio_tick();
+                        if (started == 0) break;
                     }
 
                     SDL_Flip(sdl_screen);

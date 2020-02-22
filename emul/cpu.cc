@@ -7,7 +7,9 @@
 void Gigatron::procstart() {
 
     reset();
+    
     ramMask = 0xffff;
+    started = 1;
 
     srand( static_cast<unsigned int> (time(0)) );
     for (int i = 0; i < 65536; i++) {
@@ -277,3 +279,6 @@ uint16_t Gigatron::offset(uint8_t bus, uint8_t d) {
     }
     return 0;
 }
+
+void Gigatron::run()  { started = 1; }
+void Gigatron::stop() { started = 0; }
