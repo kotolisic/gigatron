@@ -92,11 +92,11 @@ int Gigatron::get_key(SDL_Event event) {
         /* UP  */  case 0x6F: xt = BUTTON_UP; break;
         /* RT  */  case 0x72: xt = BUTTON_RIGHT; break;
         /* DN  */  case 0x74: xt = BUTTON_DOWN; break;
-        /* LF  */  case 0x71: xt = BUTTON_LEFT; break;        
+        /* LF  */  case 0x71: xt = BUTTON_LEFT; break;
         /* Home */ case 0x6E: xt = BUTTON_B; break;
         /* End  */ case 0x73: xt = BUTTON_START; break;
         /* PgUp */ case 0x70: xt = 0; break;
-        /* PgDn */ case 0x75: xt = 0; break;    
+        /* PgDn */ case 0x75: xt = 0; break;
         /* Del  */ case 0x77: xt = BUTTON_SELECT; break;
         /* Ins  */ case 0x76: xt = BUTTON_A; break;
         /* NLock*/ case 0x4D: xt = 0; break;

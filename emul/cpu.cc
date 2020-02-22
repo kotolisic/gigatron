@@ -7,10 +7,10 @@
 void Gigatron::procstart() {
 
     reset();
-    
+
     ramMask = 0xffff;
     started = 1;
-    
+
     disasm_cursor = 0;
     disasm_start  = 0;
 

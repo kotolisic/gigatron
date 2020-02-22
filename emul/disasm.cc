@@ -134,45 +134,45 @@ void Gigatron::print(int col, int row, const char* s, uint cl) {
 
 // Выдать листинг гигатрона
 void Gigatron::list() {
-    
+
     unsigned int i, j;
-    
+
     int  dstart = disasm_start;
     char buf[50];
-    
+
     // Очистка экрана
     for (int y = 0; y < 480; y++)
     for (int x = 0; x < 640; x++)
         pset(x, y, 0);
-    
+
     // Выдать строки
     for (i = 0; i < 30; i++) {
-                
+
         int   digit = 0;
         char* dz    = disasm(dstart);
-        
+
         // Подсветка текущей линии
         for (int x = 0; x < 250; x++)
         for (int y = 0; y < 16; y++)
             pset(x, y + 16*i, disasm_cursor == dstart ? 0xC0 : 0x303030);
 
         // Адрес
-        sprintf(buf, "%04X\xB3    \xB3", dstart);        
+        sprintf(buf, "%04X\xB3    \xB3", dstart);
         print(0, i, (const char*)buf, 0xa0a0a0);
-        
+
         // Код
         sprintf(buf, "%04X", rom[dstart]);
         print(5, i, (const char*)buf, 0xffffc0);
-        
+
         // Указывает текущее положение PC
         if (pc == dstart) print_char_16(10, i, 0x10, 0xffffff);
-        
+
         // Пропечатать цветной вывод
         for (j = 0; j < strlen(dz); j++) {
-            
+
             uint32_t color = 0xcccccc;
             char     ch = dz[j];
-            
+
             // Мнемоника
             if (j < 4) {
                 color = 0x00ff00;
@@ -181,10 +181,10 @@ void Gigatron::list() {
             else if (ch == '$') {
                 color = 0xff88ff;
                 digit = 1;
-            } 
+            }
             // Обнаружение цифры
             else if (digit) {
-                
+
                 if ((ch >= '0' && ch <= '9') || (ch >= 'A' && ch <= 'F')) {
                     color = 0xff88ff;
                 } else {
@@ -192,31 +192,30 @@ void Gigatron::list() {
                     color = 0xcccccc;
                 }
             }
-            
+
             print_char_16(11 + j, i, dz[j], color);
         }
-        
+
         dstart++;
     }
-    
+
     sprintf(buf, "AC: %02X   X:   %02X   Y:    %02X", ac, x, y); print(33, 1, buf, 0xc0c0c0);
     sprintf(buf, "IN: %02X   OUT: %02X   OUTX: %02X", inReg, out, outx); print(33, 2, buf, 0xc0c0c0);
     sprintf(buf, "PC: %04X NEXT %04X", pc, nextpc);     print(33, 3, buf, 0xc0c0c0);
-    
 }
 
 // Нажата клавиша в режиме ожидания
 void Gigatron::debugger_press(SDL_Event event) {
-    
+
     int key = get_key(event);
-    
+
     // F7: Выполнить один такт
     if (key == 65) {
-        
+
         all_tick();
         disasm_cursor = pc;
         list();
     }
-    
+
     // printf("%d ", key);
 }
